@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fa-IR" dir="rtl"   >
+<head>
+    <style> body { margin: 0; } </style>
+    <meta charset="utf-8">
+
+    <script src="node_modules/force-graph/dist/force-graph.js"></script>
+    <script src="js/graph1.js"></script>
+
+</head>
+
+<body>
+
+
+<div id="graph"></div>
+
+
+<script>
+
+    /*fetch('miserables.json').then(res => res.json()).then(data => {
+        const Graph = ForceGraph()
+        (document.getElementById('graph'))
+            .graphData(data)
+            .nodeId('id')
+            .nodeVal('val')
+            .nodeLabel('id')
+            .nodeAutoColorBy('group')
+            .linkSource('source')
+            .linkTarget('target')
+    });*/
+
+
+    fetch('dataSet/myDataSet.json').then(res => res.json()).then(data => {
+        const Graph = ForceGraph()
+        (document.getElementById('graph'))
+
+            .graphData(data)
+            .nodeId('id')
+            .nodeVal('val')
+            .nodeLabel('name')
+            .linkSource('source')
+            .linkTarget('target')
+            .nodeCanvasObject((data, ctx) => nodePaint(data,'#443433', ctx))
+            //.nodePointerAreaPaint(nodePaint)
+            .linkDirectionalParticles("value")
+            .linkDirectionalParticleSpeed(d => d.value * 0.002);
+
+    });
+
+    // Random tree
+    const N = 5;
+
+    /*  const gData = {
+          nodes: [{ id: 0, name:"مدیرعامل" }, { id: 1, name:"رئیس حسابداری" }, { id: 2, name:"کارشناس حسابداری" }, { id: 3, name:"دبیرخانه" }, { id: 4, name:"بایگانی" }],
+          links: [
+              { source: 0, target: 1,value:1 },
+              { source: 0, target: 1,value:5 },
+              { source: 1, target: 0,value:2 },
+              { source: 1, target: 2,value:4 },
+              { source: 2, target: 2,value:10 },
+              { source: 2, target: 2,value:3 },
+              { source: 2, target: 2,value:2 },
+              { source: 2, target: 3,value:4 },
+              { source: 3, target: 4,value:8 },
+              { source: 4, target: 3,value:20 }
+          ]
+      };
+  */
+
+
+
+
+    /* const Graph = ForceGraph()
+     (document.getElementById('graph'))
+         .nodeCanvasObject((node, ctx) => nodePaint(node, getColor(node.id), ctx))
+         .nodePointerAreaPaint(nodePaint)
+         .linkDirectionalParticles("value")
+         .linkDirectionalParticleSpeed(d => d.value * 0.002)
+         .graphData(gData);*/
+
+
+    function nodePaint({ id,name, x, y },color, ctx) {
+        let textSize=name.length*4;
+        /*
+         ctx.lineWidth = 2;
+         ctx.strokeStyle="#ff0000"
+         ctx.font = "10px arial bold"
+         ctx.textAlign = 'left';
+         ctx.textBaseline = 'middle';*/
+
+        ctx.fillStyle = 'CadetBlue';
+        [
+            () => {
+                //ctx.fillRect(x-name.length , y-6 , (2+textSize), 16);
+                ctx.strokeRect(x-name.length , y-6 , (2+textSize), 16);
+                //ctx.strokeStyle="red";
+
+
+            }, // rectangle
+        ][0]();
+
+        ctx.fillStyle = 'MidnightBlue';
+        [
+            () => {
+
+                ctx.font = '10px arial bold'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText(name, x-name.length, y);
+            }, // rectangle
+        ][0]();
+
+
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Force-Directed Graph with Hierarchical Layout</title>
+    <meta charset="utf-8">
+    <script src="node_modules/force-graph/dist/force-graph.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.2/d3.min.js"></script> <!-- include d3 library -->
+    <script src="https://unpkg.com/@hpcc-js/wasm@3.3.3/dist/index.min.js"></script> <!-- include wasm library -->
+    <script src="https://unpkg.com/force-graph@3.0.3/dist/force-graph.min.js"></script> <!-- include force-graph library -->
+
+
+    <script src="https://unpkg.com/@microsoft/microsoft-graph-client@3.1.0/dist/es/lib/msgraph-sdk.js"></script>
+    <script src="https://unpkg.com/force-graph@2.1.5/dist/force-graph.min.js"></script>
+
+</head>
+<body>
+<div id="graph" style="width: 200px;border: black solid 2px"></div>
+<script>
+    const data = {
+        name: "root",
+        children: [
+            {
+                name: "child1",
+                children: [
+                    { name: "grandchild1" },
+                    { name: "grandchild2" },
+                    {
+                        name: "grandchild3",
+                        children: [
+                            { name: "great-grandchild1" },
+                            { name: "great-grandchild2" }
+                        ]
+                    }
+                ]
+            },
+            {
+                name: "child2",
+                children: [
+                    { name: "grandchild4" },
+                    {
+                        name: "grandchild5",
+                        children: [
+                            { name: "great-grandchild3" },
+                            { name: "great-grandchild4" }
+                        ]
+                    }
+                ]
+            }
+        ]
+    };
+
+    const treeLayout = d3.tree().size([5, 80]);
+    const rootNode = d3.hierarchy(data);
+
+    const links = treeLayout(rootNode).links();
+    const nodes = rootNode.descendants();
+
+    const color = d3.scaleOrdinal(d3.schemeCategory10);
+
+    const graph = ForceGraph()
+        .graphData({ nodes, links })
+        .nodeColor(node => color(node.depth))
+        .nodeLabel(node => node.data.name)
+        .linkWidth(2)
+        .linkColor("#999")
+        .linkDirectionalParticles(2);
+
+    graph(document.getElementById("graph"));
+</script>
+</body>
+</html>

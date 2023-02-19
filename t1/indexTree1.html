@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fa-IR" dir="rtl"   >
+<head>
+    <style> body { margin: 0; } </style>
+    <meta charset="utf-8">
+
+    <script src="node_modules/force-graph/dist/force-graph.js"></script>
+
+    <script src="https://d3js.org/d3.v6.min.js"></script> <!-- include d3 library -->
+    <script src="https://unpkg.com/@hpcc-js/wasm@3.3.3/dist/index.min.js"></script> <!-- include wasm library -->
+    <script src="https://unpkg.com/force-graph@3.0.3/dist/force-graph.min.js"></script> <!-- include force-graph library -->
+
+
+    <script src="js/graph2.js"></script>
+
+</head>
+
+<body>
+
+
+<div id="graph"></div>
+<script>
+    // Set up the graph data
+    const graphData = {
+        nodes: [
+            { id: "Parent" },
+            { id: "Child 1", parent: "Parent" },
+            { id: "Child 2", parent: "Parent" },
+            { id: "Child 3", parent: "Parent" },
+            { id: "Grandchild 1", parent: "Child 3" },
+            { id: "Grandchild 2", parent: "Child 3" }
+        ],
+        links: [
+            { source: "Parent", target: "Child 1" },
+            { source: "Parent", target: "Child 2" },
+            { source: "Parent", target: "Child 3" },
+            { source: "Child 3", target: "Grandchild 1" },
+            { source: "Child 3", target: "Grandchild 2" }
+        ]
+    };
+
+    // Create the force-directed graph
+    const graph = ForceGraph()
+    (document.getElementById("graph"))
+        .graphData(graphData)
+        .nodeAutoColorBy("id")
+        .nodeLabel(node => node.id)
+        .linkWidth(2)
+        .linkDirectionalArrowLength(10)
+        .linkDirectionalArrowRelPos(1);
+
+</script>
+</body>
+</html>

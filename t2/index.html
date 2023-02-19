@@ -1,0 +1,44 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Force Graph Example</title>
+    <script src="https://cdn.jsdelivr.net/npm/@dagrejs/graphlib@2.1.7/dist/graphlib.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@hpcc-js/wasm@2.2.2/dist/index.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@hpcc-js/graph@2.13.0/dist/index.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/force-graph@3.0.3/dist/force-graph.min.js"></script>
+</head>
+<body>
+<div id="graph"></div>
+<script>
+    // Set up the graph data
+    const graphData = {
+        nodes: [
+            { id: "Parent" },
+            { id: "Child 1", parent: "Parent" },
+            { id: "Child 2", parent: "Parent" },
+            { id: "Child 3", parent: "Parent" },
+            { id: "Grandchild 1", parent: "Child 3" },
+            { id: "Grandchild 2", parent: "Child 3" }
+        ],
+        links: [
+            { source: "Parent", target: "Child 1" },
+            { source: "Parent", target: "Child 2" },
+            { source: "Parent", target: "Child 3" },
+            { source: "Child 3", target: "Grandchild 1" },
+            { source: "Child 3", target: "Grandchild 2" }
+        ]
+    };
+
+    // Create the force-directed graph
+    const graph = ForceGraph()
+    (document.getElementById("graph"))
+        .graphData(graphData)
+        .nodeAutoColorBy("id")
+        .nodeLabel(node => node.id)
+        .linkWidth(2)
+        .linkDirectionalArrowLength(10)
+        .linkDirectionalArrowRelPos(1);
+
+</script>
+</body>
+</html>
